@@ -1,0 +1,32 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: customer
+  datasource:
+    url: jdbc:postgresql://postgres:5432/customer
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: user
+    password: password
+    virtual-host: /
+    template:
+      exchange: "contactQueue"
+      routing-key: "contactRoutingKey"
+#  kafka:
+#    producer:
+#      bootstrap-servers: kafka:9093
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer

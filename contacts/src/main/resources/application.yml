@@ -1,0 +1,36 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: contacts
+  datasource:
+    url: jdbc:postgresql://postgres:5432/contacts
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: user
+    password: password
+    virtual-host: /
+    listener:
+      simple:
+        concurrent-consumers: 3
+        max-concurrent-consumers: 10
+        queue: "contactQueue"
+#  kafka:
+#    consumer:
+#      bootstrap-servers: kafka:9093
+#      group-id: group-id
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      auto-offset-reset: earliest
