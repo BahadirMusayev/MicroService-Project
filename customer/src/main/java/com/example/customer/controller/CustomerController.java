@@ -17,4 +17,9 @@ public class CustomerController {
     public void saveCustomer(@RequestBody CustomerDto customerDto){
         customerService.saveCustomer(customerDto);
     }
+
+    @GetMapping("/get/by/{finCode}")
+    public CustomerDto getByFinCode(@PathVariable String finCode){
+        return customerService.getByFinCode(finCode);
+    }
 }

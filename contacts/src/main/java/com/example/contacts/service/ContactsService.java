@@ -4,12 +4,10 @@ import com.example.contacts.dao.entity.ContactsEntity;
 import com.example.contacts.dao.repository.ContactsRepository;
 import com.example.contacts.mapper.ContactsMapper;
 import com.example.contacts.model.ContactsDto;
-import io.swagger.v3.oas.models.info.Contact;
+import com.example.contacts.producer.MessageProducer;
 import jakarta.transaction.Transactional;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ContactsService {
@@ -17,9 +15,12 @@ public class ContactsService {
 
     private final ContactsMapper contactsMapper;
 
-    public ContactsService(ContactsRepository contactsRepository, ContactsMapper contactsMapper){
+    private final MessageProducer messageProducer;
+
+    public ContactsService(ContactsRepository contactsRepository, ContactsMapper contactsMapper, MessageProducer messageProducer){
         this.contactsRepository = contactsRepository;
         this.contactsMapper = contactsMapper;
+        this.messageProducer = messageProducer;
     }
 
     @Transactional
@@ -37,5 +38,12 @@ public class ContactsService {
         }else{
             contactsRepository.save(contactsMapper.mapDtoToEntity(contactsDto));
         }
+    }
+
+    @RabbitListener(queues = "contactQueue")
+    public ContactsDto getByID(Integer customerID){
+        ContactsEntity contactsEntity = contactsRepository.findByCustomerID(customerID);
+        ContactsDto contactsDto = contactsMapper.mapEntityToDto(contactsEntity);
+        return contactsDto;
     }
 }

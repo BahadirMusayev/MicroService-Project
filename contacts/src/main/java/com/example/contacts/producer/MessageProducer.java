@@ -1,12 +1,11 @@
-package com.example.customer.producer;
+package com.example.contacts.producer;
 
-import com.example.customer.model.ContactsDto;
+import com.example.contacts.model.ContactsDto;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MessageProducer {
-
     private final RabbitTemplate rabbitTemplate;
 
     public MessageProducer(RabbitTemplate rabbitTemplate) {
@@ -15,9 +14,5 @@ public class MessageProducer {
 
     public void sendMessage(ContactsDto contactsDto) {
         rabbitTemplate.convertAndSend("contactQueue", "contactRoutingKey", contactsDto);
-    }
-
-    public ContactsDto sendMessage(Integer customerID){
-        return (ContactsDto) rabbitTemplate.convertSendAndReceive("contactQueue", "contactRoutingKey", customerID);
     }
 }
