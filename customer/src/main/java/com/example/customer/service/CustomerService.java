@@ -51,6 +51,7 @@ public class CustomerService {
 
         messageProducer.sendMessage(customerEntity.getId());
         ContactsDto contactsDto = messageProducer.sendMessage(customerEntity.getId());
+        customerDto.getContactsDto().setCustomerID(contactsDto.getCustomerID());
         customerDto.getContactsDto().setTel(contactsDto.getTel());
         customerDto.getContactsDto().setEmail(contactsDto.getEmail());
         return customerDto;
